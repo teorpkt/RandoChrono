@@ -13,19 +13,14 @@
             margin: 0;
             padding: 0;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
-        .container {
+        .form-container {
             width: 90%;
             max-width: 400px;
             text-align: center;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         h1 {
             font-size: 24px;
@@ -68,67 +63,10 @@
             font-weight: bold;
             color: #333;
         }
-        footer {
-            margin-top: 20px;
-            text-align: center;
-        }
-        footer p {
-            color: #666;
-        }
-        footer a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        footer a:hover {
-            text-decoration: underline;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 400px;
-            text-align: left;
-        }
-        .modal-content h2 {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .modal-content .form-group {
-            margin-bottom: 15px;
-        }
-        .modal-content .form-group label {
-            font-weight: bold;
-        }
-        .modal-content .form-group input {
-            width: calc(100% - 20px);
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        .modal-content .btn {
-            width: auto;
-            margin-right: 10px;
-        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="form-container">
         <h1>RandoChrono</h1>
         <div class="form-group">
             <label for="distance">Distance (km) :</label>
@@ -144,58 +82,9 @@
         </div>
         <button id="calculate-btn" class="btn">Calculer</button>
         <div id="result" class="result"></div>
-      <footer>
-        
-        <div>
-            <p>Un outil de <a href="https://github.com/teorpkt">@teorpkt</a> | <a href="#" id="settings-btn">Paramètres</a></p>
-        </div>
-    </footer>
-    </div>
-
-    
-
-    <!-- Modal -->
-    <div id="settings-modal" class="modal">
-        <div class="modal-content">
-            <h2>Paramètres</h2>
-            <div class="form-group">
-                <label for="walking-speed">Vitesse de marche (km/h) :</label>
-                <input type="number" id="walking-speed" value="4">
-            </div>
-            <div class="form-group">
-                <label for="positive-elevation-speed">Vitesse de dénivelé positif (m/h) :</label>
-                <input type="number" id="positive-elevation-speed" value="300">
-            </div>
-            <div class="form-group">
-                <label for="negative-elevation-speed">Vitesse de dénivelé négatif (m/h) :</label>
-                <input type="number" id="negative-elevation-speed" value="400">
-            </div>
-            <div>
-                <button id="save-settings-btn" class="btn">Enregistrer</button>
-            </div>
-        </div>
     </div>
 
     <script>
-        const settingsBtn = document.getElementById('settings-btn');
-        const settingsModal = document.getElementById('settings-modal');
-        const saveSettingsBtn = document.getElementById('save-settings-btn');
-
-        let walkingSpeed = 4; // km/h
-        let positiveElevationSpeed = 300; // m/h
-        let negativeElevationSpeed = 400; // m/h
-
-        settingsBtn.addEventListener('click', () => {
-            settingsModal.style.display = 'flex';
-        });
-
-        saveSettingsBtn.addEventListener('click', () => {
-            walkingSpeed = parseFloat(document.getElementById('walking-speed').value);
-            positiveElevationSpeed = parseFloat(document.getElementById('positive-elevation-speed').value);
-            negativeElevationSpeed = parseFloat(document.getElementById('negative-elevation-speed').value);
-            settingsModal.style.display = 'none';
-        });
-
         document.getElementById('calculate-btn').addEventListener('click', function() {
             const distance = parseFloat(document.getElementById('distance').value);
             const positiveElevation = parseFloat(document.getElementById('positive-elevation').value) || 0;
@@ -206,7 +95,7 @@
                 return;
             }
 
-            const walkingTime = (positiveElevation / positiveElevationSpeed + negativeElevation / negativeElevationSpeed + distance / walkingSpeed);
+            const walkingTime = ((positiveElevation / 300 + negativeElevation / 400) / 2.5 + (distance / 4) / 1.3);
             const hours = Math.floor(walkingTime);
             const minutes = Math.round((walkingTime - hours) * 60);
 
